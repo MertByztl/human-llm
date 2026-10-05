@@ -20,7 +20,7 @@
   <a href="https://github.com/MertByztl/human-llm/stargazers"><img src="https://img.shields.io/github/stars/MertByztl/human-llm?style=social" alt="GitHub stars"></a>
 </p>
 
-<p align="center"><strong>Non-Artificial Intelligence.</strong> <em>(yapay olmayan zeka)</em> 🧠</p>
+<p align="center"><strong>Non-Artificial Intelligence.</strong> 🧠</p>
 
 <p align="center">
   <img src="docs/demo.gif" alt="human-llm demo: an agent asks, you answer in the web UI" width="100%">
