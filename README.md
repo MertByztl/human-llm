@@ -69,8 +69,7 @@ agent sends its reasoning step; a human types the next move):
   OpenAI/Anthropic/Ollama client without burning tokens.
 - **It's fun.** Honestly that's most of it.
 
-> Also, the real reason: çünkü Tekirdağ çok sıkıcı bir yer. Keşke Bursa'da olsam. 😄
-> _(Translation: because Tekirdağ is a very boring place. I wish I were in Bursa.)_
+> Also, the real reason: because Tekirdağ is a very boring place. I wish I were in Bursa. I hope you never find yourself alone in Tekirdağ. And seagulls are genuinely annoying creatures. 😄
 
 ---
 
