@@ -66,6 +66,29 @@ sends it back.
 
 ---
 
+## Secret superpower: you're an ensemble + a judge 🧠
+
+Because **you** answer every request, you can quietly consult several AIs in
+your browser, then pick or blend the best answer before handing it back. The
+agent thinks it got one clean reply from "a model" — really it got your
+curated best-of-N.
+
+```text
+                      +--> ChatGPT --+
+   agent --prompt-->  YOU  --> Claude  --+--> you pick / merge --> reply to agent
+                      +--> Gemini  --+
+```
+
+Normally this takes real code: a **mixture-of-experts** router plus an
+**LLM-as-judge**. Here you do it by hand, from your chair — **router, judge and
+final say, all you.** The `copy for chat` button exists precisely to make that
+relay quick: copy the conversation, paste it to whatever AIs you like, bring the
+winner back.
+
+> You're not just in the middle. You're the whole committee. 🧔
+
+---
+
 ## Quickstart
 
 Requires Python 3.9+.
