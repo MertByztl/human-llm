@@ -12,6 +12,10 @@
 
 **A universal LLM API where the model is _you_.**
 
+> 🧔 **The real man-in-the-middle experience. Be a man. Be the middle. Be the model.**
+> _(Okay, technically you're not in the middle — you **are** the endpoint. But
+> "man-at-the-endpoint" just doesn't slap the same way.)_
+
 `human-llm` is a tiny human-in-the-loop API server. Any LLM client or agent
 connects to it thinking it found a model — but behind the endpoint there's no
 model at all. There's **you**, reading each request in a little web UI and
