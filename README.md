@@ -33,6 +33,19 @@ It speaks three dialects at once, so basically any agent can talk to it:
 
 ---
 
+## Screenshots
+
+**Idle — waiting for an agent to connect** (speaks OpenAI · Anthropic · Ollama):
+
+![human-llm idle, waiting for a request](docs/screenshot-idle.jpg)
+
+**An agent asks → you answer. You are the model** (here an autonomous pentest
+agent sends its reasoning step; a human types the next move):
+
+![human-llm showing an incoming agent request and a human-typed reply](docs/screenshot-request.jpg)
+
+---
+
 ## Why would anyone do this? 😄
 
 - **See the packets.** Watch exactly what prompts an "AI agent" sends, live, in
