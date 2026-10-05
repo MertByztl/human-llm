@@ -165,6 +165,16 @@ curl http://localhost:8000/v1/chat/completions \
 
 The call hangs until you answer in the UI. The reply is your words.
 
+### Try it with a demo agent
+
+Want to feel the full agent↔human loop without wiring up a real tool? Run the
+included **STRIX-JR** demo agent — a tiny Strix-style autonomous agent whose
+brain is you (see [`examples/`](examples/)):
+
+```bash
+python examples/demo_agent.py
+```
+
 ---
 
 ## The UI
