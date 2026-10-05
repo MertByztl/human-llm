@@ -120,6 +120,20 @@ winner back.
 
 ---
 
+## System Requirements
+
+- **Python 3.9+**
+- **A web browser** — for the cockpit UI
+- **~20 MB RAM** — it's a thin relay, not a model
+- **Docker** — optional, if you prefer containers
+- **A human brain** 🧠 — *required, non-optional.* This is the actual inference
+  engine. No GPU, no cloud, no fallback. If the human steps away, inference
+  halts. Recommended: coffee, and not being alone in Tekirdağ.
+
+> You are not just the user. You are the system.
+
+---
+
 ## Quickstart
 
 Requires Python 3.9+.
