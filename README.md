@@ -22,6 +22,10 @@
 
 <p align="center"><strong>Non-Artificial Intelligence.</strong> <em>(yapay olmayan zeka)</em> 🧠</p>
 
+<p align="center">
+  <img src="docs/demo.gif" alt="human-llm demo: an agent asks, you answer in the web UI" width="100%">
+</p>
+
 **A universal LLM API where the model is _you_.**
 
 > 🧔 **The real man-in-the-middle experience. Be a man. Be the middle. Be the model.**
