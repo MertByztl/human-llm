@@ -126,6 +126,15 @@ Then open **http://localhost:8000** in your browser. That's the cockpit.
 
 > Change the port with `PORT=1234 python server.py`.
 
+### Or run it with Docker
+
+```bash
+docker build -t human-llm .
+docker run -p 8000:8000 -v "$(pwd)/sessions:/app/sessions" human-llm
+```
+
+The `-v` mount keeps your session logs on the host (and out of the image).
+
 ### Point a client at it
 
 **OpenAI-style (Python SDK, LiteLLM, most tools):**
@@ -219,6 +228,13 @@ API — if you want to use ChatGPT, Claude, Gemini or anything else to help you
 answer, do that the normal way, as a human, in their own apps, within their
 terms. `human-llm` just automates the "show me the request / take my answer"
 loop around whatever you, the human, decide to say.
+
+---
+
+## Contributing
+
+PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Just never commit a
+`sessions/` file. 🙂
 
 ---
 
