@@ -1,0 +1,29 @@
+# -------------------------------------------------------------------
+# NEVER commit your sessions — they contain your actual conversations
+# and may hold personal data. This is the whole reason it is here.
+# -------------------------------------------------------------------
+sessions/
+*.jsonl
+
+# local / secret config
+.env
+*.env
+
+# logs
+*.log
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# os / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

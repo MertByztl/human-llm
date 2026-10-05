@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>human-llm &middot; you are the model</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c2230;
+    --border: #2b3340;
+    --text: #e6edf3;
+    --muted: #8b98a9;
+    --accent: #3fb950;
+    --accent-2: #58a6ff;
+    --warn: #d29922;
+    --sys: #bc8cff;
+    --user: #58a6ff;
+    --assistant: #3fb950;
+    --tool: #d29922;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Consolas, monospace;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  header .logo { color: var(--accent); font-weight: 700; letter-spacing: 1px; }
+  header .logo span { color: var(--muted); font-weight: 400; }
+  header .meta { margin-left: auto; color: var(--muted); font-size: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+  header .meta b { color: var(--text); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--warn); margin-right: 6px; }
+  .dot.live { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+  main { flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+
+  .col { min-height: 0; display: flex; flex-direction: column; }
+  .col.left { border-right: 1px solid var(--border); }
+  .col-head {
+    padding: 8px 16px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .col-head .btn { margin-left: auto; }
+  .scroll { overflow-y: auto; padding: 14px 16px; flex: 1; }
+
+  .msg { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: var(--panel); overflow: hidden; }
+  .msg .role { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 6px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); }
+  .role.system { color: var(--sys); }
+  .role.user { color: var(--user); }
+  .role.assistant { color: var(--assistant); }
+  .role.tool { color: var(--tool); }
+  .msg .body { padding: 10px 12px; white-space: pre-wrap; word-break: break-word; font-size: 13px; line-height: 1.5; }
+
+  .tools-box { border: 1px dashed var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; color: var(--muted); font-size: 12px; }
+  .tools-box summary { cursor: pointer; color: var(--warn); }
+  .tools-box pre { white-space: pre-wrap; word-break: break-word; margin: 8px 0 0; color: var(--text); }
+
+  .idle { color: var(--muted); text-align: center; margin-top: 18vh; font-size: 14px; }
+  .idle .big { font-size: 40px; margin-bottom: 10px; }
+
+  .answer-wrap { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+  .tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
+  .tab { padding: 6px 14px; border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--panel); color: var(--muted); cursor: pointer; font-size: 12px; }
+  .tab.active { background: var(--panel-2); color: var(--text); }
+  .pane { flex: 1; padding: 0 16px 12px; display: none; flex-direction: column; min-height: 0; }
+  .pane.active { display: flex; }
+
+  textarea, input {
+    width: 100%; background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+    font-family: inherit; font-size: 13px; resize: none;
+  }
+  textarea:focus, input:focus { outline: none; border-color: var(--accent-2); }
+  #answer { flex: 1; min-height: 120px; }
+  .field { margin-bottom: 8px; }
+  .field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--border); }
+  .hint { color: var(--muted); font-size: 12px; }
+  .btn {
+    background: var(--accent); color: #07140b; border: none; border-radius: 8px;
+    padding: 8px 16px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); font-weight: 400; }
+  .btn.ghost:hover { color: var(--text); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .send { margin-left: auto; }
+  .badge { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--accent-2); background: var(--panel-2); }
+  .badge.anthropic { color: #d2a8ff; }
+  .badge.ollama { color: var(--warn); }
+  .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--panel-2); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">human&#8209;llm <span>&middot; you are the model</span></div>
+    <div class="meta">
+      <span><span id="statusdot" class="dot"></span><span id="status">connecting…</span></span>
+      <span>queue: <b id="count">0</b></span>
+      <span>log: <b id="session">—</b></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="col left">
+      <div class="col-head">
+        incoming request
+        <span id="proto" class="badge" style="display:none"></span>
+        <button class="btn ghost" id="copyBtn" title="Copy the conversation so you can paste it into a real chat">copy for chat</button>
+      </div>
+      <div class="scroll" id="convo">
+        <div class="idle"><div class="big">&#129504;</div>waiting for a request…<br/>speaks <b>OpenAI</b> &middot; <b>Anthropic</b> &middot; <b>Ollama</b> on <b>http://localhost:8000</b></div>
+      </div>
+    </section>
+
+    <section class="col right">
+      <div class="col-head">your answer</div>
+      <div class="answer-wrap">
+        <div class="tabs">
+          <div class="tab active" data-mode="text">text reply</div>
+          <div class="tab" data-mode="tool">tool call (advanced)</div>
+        </div>
+
+        <div class="pane active" id="pane-text">
+          <div class="field" style="flex:1; display:flex; flex-direction:column;">
+            <label>reply as the assistant</label>
+            <textarea id="answer" placeholder="Type the model's answer here… (you are the model)"></textarea>
+          </div>
+        </div>
+
+        <div class="pane" id="pane-tool">
+          <div class="field">
+            <label>function name</label>
+            <input id="toolName" placeholder="e.g. run_command" />
+          </div>
+          <div class="field" style="flex:1; display:flex; flex-direction:column;">
+            <label>arguments (JSON)</label>
+            <textarea id="toolArgs" placeholder='{"cmd": "ls -la"}'></textarea>
+          </div>
+        </div>
+
+        <div class="bar">
+          <span class="hint">Ctrl+Enter to send</span>
+          <button class="btn send" id="sendBtn" disabled>send reply</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  let current = null;
+  let mode = "text";
+
+  const $ = (id) => document.getElementById(id);
+
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 1600);
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.mode === m));
+    $("pane-text").classList.toggle("active", m === "text");
+    $("pane-tool").classList.toggle("active", m === "tool");
+  }
+  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setMode(t.dataset.mode)));
+
+  function renderRequest(req) {
+    const box = $("convo");
+    box.innerHTML = "";
+    const proto = $("proto");
+    if (req.protocol) {
+      proto.style.display = "";
+      proto.className = "badge " + req.protocol;
+      proto.textContent = "via " + req.protocol + (req.model ? " · " + req.model : "");
+    }
+    if (req.tools && req.tools.length) {
+      const d = document.createElement("details");
+      d.className = "tools-box";
+      const s = document.createElement("summary");
+      s.textContent = req.tools.length + " tool(s) available — click to inspect";
+      const pre = document.createElement("pre");
+      pre.textContent = JSON.stringify(req.tools, null, 2);
+      d.appendChild(s); d.appendChild(pre);
+      box.appendChild(d);
+    }
+    for (const m of req.messages) {
+      const card = document.createElement("div");
+      card.className = "msg";
+      const role = document.createElement("div");
+      const r = (m.role || "?").toLowerCase();
+      role.className = "role " + r;
+      role.textContent = m.role || "?";
+      const body = document.createElement("div");
+      body.className = "body";
+      body.textContent = typeof m.content === "string" ? m.content : JSON.stringify(m.content, null, 2);
+      card.appendChild(role); card.appendChild(body);
+      box.appendChild(card);
+    }
+    box.scrollTop = 0;
+  }
+
+  function showIdle() {
+    $("convo").innerHTML = '<div class="idle"><div class="big">&#129504;</div>waiting for a request…<br/>speaks <b>OpenAI</b> &middot; <b>Anthropic</b> &middot; <b>Ollama</b> on <b>http://localhost:8000</b></div>';
+    $("proto").style.display = "none";
+    $("sendBtn").disabled = true;
+  }
+
+  async function poll() {
+    try {
+      const r = await fetch("/api/pending");
+      const d = await r.json();
+      $("session").textContent = d.session_file || "—";
+      $("status").textContent = "live";
+      $("statusdot").classList.add("live");
+      const list = d.pending || [];
+      $("count").textContent = list.length;
+      if (list.length === 0) {
+        if (current) { current = null; showIdle(); }
+      } else {
+        const req = list[0];
+        if (!current || current.id !== req.id) {
+          current = req;
+          renderRequest(req);
+          $("sendBtn").disabled = false;
+          $("answer").focus();
+        }
+      }
+    } catch (e) {
+      $("status").textContent = "server offline";
+      $("statusdot").classList.remove("live");
+    }
+  }
+
+  async function send() {
+    if (!current) return;
+    const payload = { id: current.id };
+    if (mode === "tool") {
+      payload.type = "tool";
+      payload.tool_name = $("toolName").value.trim();
+      payload.tool_args = $("toolArgs").value.trim() || "{}";
+      if (!payload.tool_name) { toast("function name required"); return; }
+    } else {
+      payload.type = "text";
+      payload.content = $("answer").value;
+    }
+    try {
+      const r = await fetch("/api/respond", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (r.ok) {
+        $("answer").value = "";
+        $("toolName").value = "";
+        $("toolArgs").value = "";
+        current = null;
+        showIdle();
+        toast("sent — logged to disk");
+        poll();
+      } else {
+        toast("request expired");
+      }
+    } catch (e) { toast("could not reach server"); }
+  }
+  $("sendBtn").addEventListener("click", send);
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); send(); }
+  });
+
+  $("copyBtn").addEventListener("click", () => {
+    if (!current) { toast("nothing to copy"); return; }
+    const lines = current.messages.map(m => {
+      const c = typeof m.content === "string" ? m.content : JSON.stringify(m.content);
+      return "### " + (m.role || "?") + "\n" + c;
+    });
+    navigator.clipboard.writeText(lines.join("\n\n")).then(
+      () => toast("conversation copied — paste it into your chat"),
+      () => toast("copy failed")
+    );
+  });
+
+  setInterval(poll, 1500);
+  poll();
+</script>
+</body>
+</html>
