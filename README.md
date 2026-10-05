@@ -10,6 +10,15 @@
 
 # human-llm 🧠
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/MertByztl/human-llm?color=green" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/python-3.9%2B-blue.svg" alt="Python 3.9+">
+  <img src="https://img.shields.io/badge/built%20with-FastAPI-009688.svg" alt="Built with FastAPI">
+  <img src="https://img.shields.io/badge/speaks-OpenAI%20%7C%20Anthropic%20%7C%20Ollama-8A2BE2.svg" alt="Speaks OpenAI, Anthropic, Ollama">
+  <img src="https://img.shields.io/badge/model-you%20%F0%9F%A7%A0-ff69b4.svg" alt="Model: you">
+  <a href="https://github.com/MertByztl/human-llm/stargazers"><img src="https://img.shields.io/github/stars/MertByztl/human-llm?style=social" alt="GitHub stars"></a>
+</p>
+
 **A universal LLM API where the model is _you_.**
 
 > 🧔 **The real man-in-the-middle experience. Be a man. Be the middle. Be the model.**
