@@ -16,8 +16,11 @@
   <img src="https://img.shields.io/badge/built%20with-FastAPI-009688.svg" alt="Built with FastAPI">
   <img src="https://img.shields.io/badge/speaks-OpenAI%20%7C%20Anthropic%20%7C%20Ollama-8A2BE2.svg" alt="Speaks OpenAI, Anthropic, Ollama">
   <img src="https://img.shields.io/badge/model-you%20%F0%9F%A7%A0-ff69b4.svg" alt="Model: you">
+  <img src="https://img.shields.io/badge/intelligence-non--artificial-ff1493.svg" alt="Non-Artificial Intelligence">
   <a href="https://github.com/MertByztl/human-llm/stargazers"><img src="https://img.shields.io/github/stars/MertByztl/human-llm?style=social" alt="GitHub stars"></a>
 </p>
+
+<p align="center"><strong>Non-Artificial Intelligence.</strong> <em>(yapay olmayan zeka)</em> 🧠</p>
 
 **A universal LLM API where the model is _you_.**
 
